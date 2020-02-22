@@ -1,0 +1,38 @@
+<div class="my-3">
+
+    <transition
+        name="table-classes-transition"
+        enter-active-class="animated slideInRight"
+        leave-active-class="animated slideOutRight"
+    >
+        <div v-if="IsShowTable()" key="tb-data">
+            <span>{{tableName}}</span>
+            <table class="table table-sm table-hover table-responsive-sm">
+                <thead>
+                    <tr>
+                        <th scope="col" v-for="(column, index) in columns" :key="index"> {{column}}</th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in recordItems" :key="index">
+                        <td v-for="(column, indexColumn) in columns" :key="indexColumn">{{item[column]}}</td>
+                        <td>
+                            <button class="btn btn-secondary" @click="detailclick(index, $event)">測試</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <vue-modal id="test" :title="modalTitle" v-bind:record.sync="selectRecord" v-on:modalSaveChange="SaveChange"></vue-modal>
+        </div>
+  
+        <div v-else key="tb-empty">
+            <div class="alert alert-danger" role="alert">
+                無資料
+            </div>
+        </div>
+    </transition>
+
+</div>
+
+<!--https://stackoverflow.com/questions/53007008/create-dynamic-table-component-vue-js-->

@@ -1,0 +1,19 @@
+.tooltip-inner {
+    background-color: rgba(220, 53, 69, 0.9);
+}
+
+.bs-tooltip-bottom .arrow::before {
+    border-bottom-color: rgba(220, 53, 69, 0.9);
+}
+
+.bs-tooltip-top .arrow::before {
+    border-top-color: rgba(220, 53, 69, 0.9);
+}
+
+.bs-tooltip-left .arrow::before {
+    border-left-color: rgba(220, 53, 69, 0.9);
+}
+
+.bs-tooltip-right .arrow::before {
+    border-right-color: rgba(220, 53, 69, 0.9);
+}

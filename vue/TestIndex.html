@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+        integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="js/pc-bootstrap4-datetimepicker/bootstrap-datetimepicker.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+    <title>Vue Test</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <!-- 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script> 
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"
+        integrity="sha256-BuxrUdr/4YoztQLxT6xmdO6hSQw2d6BtBUY1pteGds4=" crossorigin="anonymous"></script>
+
+    <script src="js/moment-with-locales.js"></script>
+    <script src="js/pc-bootstrap4-datetimepicker/bootstrap-datetimepicker.js"></script>
+
+    <script src="dist/app.js"></script>
+    <script src="js/site.js"></script>
+    <script src="components/vue-table.js"></script>
+    <script src="components/vue-test.js"></script>
+    <script src="components/vue-datetimepicker.js"></script>
+
+    <style>
+        /*https://www.competa.com/blog/fit-html-tables-in-responsive-websites-with-css/
+        .table {
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+            overflow-x: auto;
+            display: block;
+        }           
+        */
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-12">
+                <div id="app">
+                    <div class="row">
+                        <div class="col-12">           
+                            <vue-table id="myhw" :items='items' :columns='columns'></vue-table>           
+                        </div>
+                    </div>
+
+                    <div id="dynamicexample" class="row">
+                        <div class="col-4 border border-dark">
+                            <h3>Scroll down inside this section ↓</h3>
+                            <p v-pin:[direction]="100">I am pinned onto the page at 200px to the left.</p>
+                        </div>
+
+                        <div class="col-4 border border-dark">
+                            <div id="hook-arguments-example" v-demo:foo.a.b="message"></div>
+                        </div>
+
+                        <div class="col-4 border border-dark">
+                            <prompt-component></prompt-component>
+
+                            <b-button class="mt-1" variant="primary" :disabled="!isShow" @click="uploadData">
+                                <span v-if="isShow">upload</span>
+
+                                <b-spinner v-if="!isShow" small></b-spinner>
+                                <span v-if="!isShow">Loading...</span>
+                            </b-button>
+
+                            <button class="btn btn-dark mt-1" id="selector"
+                                data-loading-text="<div class='spinner-border spinner-border-sm text-primary' role='status'></div> Loading..."
+                                onclick="bs4Loading()">Click Me</button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4 border border-dark">
+
+                            <div class="row my-3">
+                                <div class="col-6">
+                                    <vue-datetimepicker v-model="dateValue"></vue-datetimepicker>
+                                </div>
+                                <div class="col-6">
+                                    <vue-datetimepicker v-model="dateValue"></vue-datetimepicker>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="form-group">
+                                        <label for=""></label>
+                                        <input type="text" class="form-control" :value="MomentFormatDate(dateValue)"
+                                            readonly aria-describedby="helpId" placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="text-center my-4">
+                                        <b-button v-b-popover.hover="'I am popover content!'" title="Popover Title">
+                                            Hover Me
+                                        </b-button>
+                                        <a href="./NextPage.html" class="badge badge-primary">Go Next</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-4 border border-dark">
+
+                            <header-component-2 v-bind:menu-items="menu"></header-component-2>
+
+                            <link-component msg="Welcome to Your Vue.js App1"></link-component>
+
+                            <header-component v-bind:menu-items="menu1"></header-component>
+
+                        </div>
+
+                        <div class="col-4 border border-dark">
+                            <div style="height:400px;width:400px">
+                                <canvas id="myChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row border border-dark">
+            <canvas class="fireworks"></canvas>
+        </div>
+
+    </div>
+
+    <script src="./components/vue-header.js"></script>
+    <script src="./js/fireworks.js"></script>
+    <script src="./js/inactivity.js"></script>
+    <script>
+
+        var test = [];
+        for (var i = 0; i < 3; i++) {
+            var a = {
+                label: i + '# of Votes',
+                data: [12 + i, 19 + i, 3 + i, 5 + i, 2 + i, 3 + i],
+                backgroundColor: 'rgb(' + (150 + (i * 10)) + ', 250, 200)',
+                borderColor: 'rgb(' + (200 + (i * 10)) + ', 99, 132)',
+                fill: false
+            };
+            test.push(a);
+        }
+
+        function DisplayChart() {
+            var ctx = document.getElementById('myChart');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: test
+                },
+                options: {
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        } 
+
+    </script>
+
+    <script>
+        sessionStorage["test"] = "9527";
+        var vm = new Vue({
+            el: '#app',
+            //delimiters: ['${', '}'],
+            data: {
+                'items': {},
+                'columns': {},
+                message: "test1",
+                direction: 'left',
+                menu: ["test", "tset2"],
+                menu1: ["test3", "tset4"],
+                dateValue: moment(),
+                isShow: true
+            },
+            components: {
+                'header-component-2': headercomponent2
+            },
+            mounted() {
+                DisplayChart();
+            },
+            watch: {
+                dateValue: function (value) {
+                    console.log("app:" + moment(value).toString());
+                }
+            },
+            methods: {
+                uploadData() {
+                    this.isShow = false;
+                    //let vm = this;
+                    if(Object.keys(vm.items).length == 0) {
+                        GetTableData().then(function (response) {
+                            var tabledata = response;
+
+                            vm.items = tabledata.items;
+                            vm.columns = tabledata.columns;
+                            //vm.isShow = true;
+                        });
+                    }
+                    else 
+                    {
+                        vm.items = {};
+                        vm.columns = {};
+                    }
+
+                    setTimeout(() => {
+                        this.isShow = true;
+                    }, 1000);
+                },              
+                MomentFormatDate(date) {
+                    return moment(date).format();
+                }
+            },
+        });
+    </script>
+
+</body>
+
+</html>
