@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <title>JSON Editor</title>
+</head>
+
+<body>
+    <div class="container mt-3">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#Editor1">Editor1</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#Editor2">Editor2</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+
+            <div id="Editor1" class="tab-pane active container">
+                <div class="embed-responsive embed-responsive-1by1">
+                    <iframe src="/jsonEditor1.html" class="embed-responsive-item mt-2"></iframe>
+                </div>
+            </div>
+            <div id="Editor2" class="container tab-pane fade">
+                <div class="embed-responsive embed-responsive-1by1">
+                    <iframe src="/jsonEditor2.html" class="embed-responsive-item mt-2"></iframe>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
