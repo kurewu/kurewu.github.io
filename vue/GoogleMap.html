@@ -119,12 +119,13 @@
 
         function processSVData({ data }) {
             const location = data.location;
+            /*
             const marker = new google.maps.Marker({
                 position: location.latLng,
                 map,
                 title: location.description,
             });
-
+            */
             const dateCell = document.getElementById("date-cell");
             dateCell.innerText = data.imageDate;
 
@@ -137,7 +138,7 @@
                 zoom: 0
             });
             panorama.setVisible(true);
-
+            /*
             marker.addListener("click", () => {
                 const markerPanoID = location.pano;
 
@@ -150,7 +151,7 @@
                 });
                 panorama.setVisible(true);
             });
-
+            */
         }
 
     </script>
