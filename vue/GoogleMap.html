@@ -259,7 +259,7 @@
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAu-Zl5Bm1IePmURQTbXYkIyYMG40iKb_4&callback=initMap&v=weekly"
+        src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap&v=weekly"
         async></script>
 
     <script>
@@ -285,7 +285,7 @@
             let fov = Math.atan(Math.pow(2, 1 - ($("#zoom-cell").html()))) * 360 / Math.PI;
 
             let url = `https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${location.replace(/\(|\)/gi, "")}`
-                + `&fov=${fov}&heading=${heading}&pitch=${pitch}&key=AIzaSyAu-Zl5Bm1IePmURQTbXYkIyYMG40iKb_4`
+                + `&fov=${fov}&heading=${heading}&pitch=${pitch}&key=`
 
             let SnapshotImg = new Image();
             SnapshotImg.crossOrigin = 'Anonymous';
