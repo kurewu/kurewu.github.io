@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dracula">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深色模式配色預覽</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== 全域重置 ===== */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter','Segoe UI',system-ui,sans-serif;
+    line-height:1.6;
+    background:var(--bg);
+    color:var(--text);
+    transition:background .35s ease,color .35s ease;
+    min-height:100vh;
+    background-image:
+      radial-gradient(ellipse 900px 500px at 15% -10%, color-mix(in srgb, var(--accent) 10%, transparent), transparent),
+      radial-gradient(ellipse 700px 500px at 100% 0%, color-mix(in srgb, var(--accent) 6%, transparent), transparent);
+    background-attachment:fixed;
+  }
+  ::selection{background:var(--accent);color:#000}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+
+  /* ===== 頂部列 ===== */
+  .topbar{
+    position:sticky;top:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+    padding:.9rem 1.5rem;
+    background:color-mix(in srgb, var(--surface) 78%, transparent);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    border-bottom:1px solid var(--border);
+    transition:background .35s ease,border-color .35s ease;
+  }
+  .brand{display:flex;align-items:center;gap:.6rem;font-weight:700;letter-spacing:.02em}
+  .brand-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+  .brand small{display:block;font-weight:500;font-size:.7rem;color:var(--text-secondary);letter-spacing:.04em}
+
+  .switcher{display:flex;gap:.4rem;flex-wrap:wrap;padding:.3rem;background:var(--bg);border:1px solid var(--border);border-radius:999px}
+  .sw-btn{
+    display:flex;align-items:center;gap:.4rem;
+    padding:.4rem .8rem;border:none;border-radius:999px;
+    background:transparent;color:var(--text-secondary);cursor:pointer;
+    font-size:.78rem;font-weight:500;font-family:inherit;
+    transition:background .2s,color .2s,transform .15s;
+  }
+  .sw-btn:hover{color:var(--text);transform:translateY(-1px)}
+  .sw-btn.active{background:var(--surface);color:var(--text);box-shadow:inset 0 0 0 1px var(--border)}
+  .sw-dot{width:8px;height:8px;border-radius:50%;flex:none}
+
+  /* ===== 佈局 ===== */
+  .container{max-width:1120px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+  .hero{margin-bottom:2rem}
+  h1{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:clamp(1.6rem,3vw,2.3rem);font-weight:700;letter-spacing:-.01em;margin-bottom:.4rem}
+  .sub{color:var(--text-secondary);font-size:.95rem;max-width:60ch}
+  h2{font-size:1.05rem;margin-bottom:.5rem;font-weight:600}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;display:block}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;margin-bottom:2rem}
+
+  /* ===== 卡片 ===== */
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;padding:1.5rem;
+    transition:box-shadow .25s,border-color .25s,transform .25s,background .35s;
+    position:relative;overflow:hidden;
+  }
+  .card::before{
+    content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;
+    background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 35%, transparent), transparent 40%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:0;transition:opacity .25s;
+  }
+  .card:hover{box-shadow:0 8px 30px rgba(0,0,0,.35);border-color:color-mix(in srgb, var(--accent) 40%, var(--border));transform:translateY(-2px)}
+  .card:hover::before{opacity:1}
+  .card h2{font-size:1.1rem}
+  .card p{color:var(--text-secondary);font-size:.88rem;margin-bottom:1rem}
+  .badge{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.75rem;font-weight:600;margin-right:.4rem}
+  .tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.8rem}
+  .tag{padding:.2rem .6rem;border-radius:999px;background:var(--bg);color:var(--accent);font-size:.72rem;font-family:'JetBrains Mono',monospace;border:1px solid var(--border)}
+
+  /* ===== 按鈕樣式 ===== */
+  .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.2rem;border:none;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;font-family:inherit;transition:opacity .2s,transform .15s}
+  .btn:hover{opacity:.88;transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .btn-primary{background:var(--accent);color:#000}
+  .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+  .btn-danger{background:var(--danger);color:#fff}
+
+  /* ===== 進度條 ===== */
+  .progress-bar{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin-top:.8rem}
+  .progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .6s ease}
+
+  /* ===== 表格 ===== */
+  table{width:100%;border-collapse:collapse;font-size:.85rem}
+  th,td{padding:.55rem .75rem;text-align:left;border-bottom:1px solid var(--border)}
+  th{color:var(--text-secondary);font-weight:500;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em}
+  tr:last-child td{border-bottom:none}
+  tr td{transition:background .15s}
+  tr:hover td{background:var(--bg)}
+
+  /* ===== 提示框 ===== */
+  .alert{padding:.75rem 1rem;border-radius:8px;font-size:.85rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+  .alert:last-child{margin-bottom:0}
+  .alert-success{background:color-mix(in srgb,var(--success) 14%,transparent);border-left:3px solid var(--success);color:var(--text)}
+  .alert-warn{background:color-mix(in srgb,var(--warning) 14%,transparent);border-left:3px solid var(--warning);color:var(--text)}
+  .alert-error{background:color-mix(in srgb,var(--danger) 14%,transparent);border-left:3px solid var(--danger);color:var(--text)}
+
+  /* ===== 代碼塊 ===== */
+  pre{background:var(--code-bg,var(--bg));padding:1rem;border-radius:8px;overflow-x:auto;font-size:.8rem;line-height:1.6;border:1px solid var(--border)}
+  code{color:var(--accent);font-family:'JetBrains Mono',monospace}
+
+  /* ===== 統計行 ===== */
+  .stats{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+  .stat{flex:1;min-width:150px;text-align:center;padding:1.1rem 1rem;background:var(--surface);border-radius:10px;border:1px solid var(--border)}
+  .stat .num{font-family:'JetBrains Mono',monospace;font-size:1.7rem;font-weight:700;color:var(--accent)}
+  .stat .label{font-size:.72rem;color:var(--text-secondary);margin-top:.3rem;letter-spacing:.03em}
+
+  /* ===== 對比度實驗室（signature） ===== */
+  .lab{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.75rem;transition:background .35s,border-color .35s}
+  .lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem;margin-top:1.25rem}
+  .lab-row{
+    display:flex;align-items:center;gap:.75rem;
+    padding:.75rem .9rem;border-radius:10px;background:var(--bg);border:1px solid var(--border);
+  }
+  .lab-preview{
+    width:52px;height:52px;border-radius:8px;flex:none;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.95rem;
+    border:1px solid var(--border);
+  }
+  .lab-info{flex:1;min-width:0}
+  .lab-label{font-size:.82rem;font-weight:600;margin-bottom:.15rem}
+  .lab-hex{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-secondary)}
+  .lab-badge{
+    font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;
+    padding:.25rem .5rem;border-radius:6px;white-space:nowrap;text-align:center;min-width:64px;
+  }
+  .lab-ratio{font-size:.68rem;opacity:.85;display:block;margin-top:.15rem}
+
+  /* ===== 圖表 ===== */
+  .chart{display:flex;align-items:flex-end;gap:4px;height:80px;margin-top:.5rem}
+  .chart-bar{flex:1;border-radius:3px 3px 0 0;background:var(--accent);opacity:.75;transition:height .3s}
+  .chart-bar:hover{opacity:1}
+
+  /* ===== 進場動畫 ===== */
+  @media (prefers-reduced-motion:no-preference){
+    .card,.stat,.lab{animation:rise .5s ease both}
+    .grid .card:nth-child(1){animation-delay:.02s}
+    .grid .card:nth-child(2){animation-delay:.06s}
+    .grid .card:nth-child(3){animation-delay:.10s}
+    .grid .card:nth-child(4){animation-delay:.14s}
+    .grid .card:nth-child(5){animation-delay:.18s}
+    .grid .card:nth-child(6){animation-delay:.22s}
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ===== 主題變數 ===== */
+  [data-theme="dracula"]{--bg:#282a36;--surface:#383a4d;--text:#f8f8f2;--text-secondary:#9aa0c5;--accent:#bd93f9;--border:#4a4d66;--danger:#ff5555;--success:#50fa7b;--warning:#ffb86c;--code-bg:#1e1e2e}
+  [data-theme="solarized"]{--bg:#002b36;--surface:#073642;--text:#93a1a1;--text-secondary:#657b83;--accent:#2aa1e0;--border:#0a4a5a;--danger:#dc322f;--success:#859900;--warning:#b58900;--code-bg:#002b36}
+  [data-theme="nord"]{--bg:#2e3440;--surface:#3b4252;--text:#eceff4;--text-secondary:#a7afbd;--accent:#88c0d0;--border:#4c566a;--danger:#bf616a;--success:#a3be8c;--warning:#ebcb8b;--code-bg:#272c36}
+  [data-theme="github"]{--bg:#0d1117;--surface:#161b22;--text:#c9d1d9;--text-secondary:#8b949e;--accent:#58a6ff;--border:#30363d;--danger:#f85149;--success:#3fb950;--warning:#d29922;--code-bg:#0d1117}
+  [data-theme="one-dark"]{--bg:#282c34;--surface:#2f343d;--text:#abb2bf;--text-secondary:#828a98;--accent:#61afef;--border:#3f4550;--danger:#e06c75;--success:#98c379;--warning:#e5c07b;--code-bg:#21252b}
+  [data-theme="catppuccin"]{--bg:#1e1e2e;--surface:#313244;--text:#cdd6f4;--text-secondary:#a6adc8;--accent:#89b4fa;--border:#45475a;--danger:#f38ba8;--success:#a6e3a1;--warning:#f9e2af;--code-bg:#181825}
+  [data-theme="midnight"]{--bg:#0f0a1a;--surface:#1e1636;--text:#e0d4f8;--text-secondary:#a294c9;--accent:#d4a5ff;--border:#332a54;--danger:#ff6b6b;--success:#69f0ae;--warning:#ffd740;--code-bg:#120d1f}
+  [data-theme="oled"]{--bg:#000000;--surface:#0d0d0d;--text:#ffffff;--text-secondary:#b3b3b3;--accent:#22d3ee;--border:#242424;--danger:#ff3333;--success:#00ff88;--warning:#ffaa00;--code-bg:#0a0a0a}
+
+  /* 響應式 */
+  @media(max-width:640px){
+    .topbar{flex-direction:column;align-items:stretch}
+    .switcher{justify-content:center}
+    .grid{grid-template-columns:1fr}
+    .lab-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="brand-dot"></span>
+    <span>
+      深色模式配色預覽
+      <small>Dark Theme Showcase</small>
+    </span>
+  </div>
+  <div class="switcher" role="tablist" aria-label="主題選擇">
+    <button class="sw-btn active" data-theme="dracula"><span class="sw-dot" style="background:#bd93f9"></span>Dracula</button>
+    <button class="sw-btn" data-theme="solarized"><span class="sw-dot" style="background:#2aa1e0"></span>Solarized</button>
+    <button class="sw-btn" data-theme="nord"><span class="sw-dot" style="background:#88c0d0"></span>Nord</button>
+    <button class="sw-btn" data-theme="github"><span class="sw-dot" style="background:#58a6ff"></span>GitHub</button>
+    <button class="sw-btn" data-theme="one-dark"><span class="sw-dot" style="background:#61afef"></span>One Dark</button>
+    <button class="sw-btn" data-theme="catppuccin"><span class="sw-dot" style="background:#89b4fa"></span>Catppuccin</button>
+    <button class="sw-btn" data-theme="midnight"><span class="sw-dot" style="background:#d4a5ff"></span>Midnight</button>
+    <button class="sw-btn" data-theme="oled"><span class="sw-dot" style="background:#22d3ee"></span>OLED</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="hero">
+    <span class="eyebrow">8 Themes · Live Preview</span>
+    <h1>深色模式配色預覽</h1>
+    <p class="sub">切換上方按鈕即時預覽，所有配色的實際對比度都會在下方「對比度實驗室」中即時計算並驗證。</p>
+  </div>
+
+  <!-- 統計 -->
+  <div class="stats">
+    <div class="stat"><div class="num">8</div><div class="label">主題方案</div></div>
+    <div class="stat"><div class="num" id="stat-aa">—</div><div class="label">WCAG AA 合規項目</div></div>
+    <div class="stat"><div class="num">12</div><div class="label">UI 元件預覽</div></div>
+  </div>
+
+  <!-- 卡片區域 -->
+  <div class="grid">
+    <!-- 卡片 1 -->
+    <div class="card">
+      <h2>📋 任務管理</h2>
+      <p>核心作業模組，包含優先級標籤與進度追蹤。</p>
+      <div class="tags">
+        <span class="tag">urgent</span>
+        <span class="tag">design</span>
+        <span class="tag">backend</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
+      <p style="font-size:.75rem;margin-top:.4rem;color:var(--text-secondary)">完成度 72%</p>
+    </div>
+
+    <!-- 卡片 2 -->
+    <div class="card">
+      <h2>👤 使用者設定</h2>
+      <p>管理通知偏好、帳戶安全與整合服務連接。</p>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn btn-primary">儲存變更</button>
+        <button class="btn btn-outline">取消</button>
+      </div>
+    </div>
+
+    <!-- 卡片 3 -->
+    <div class="card">
+      <h2>📊 即時統計</h2>
+      <div class="chart">
+        <div class="chart-bar" style="height:45%"></div>
+        <div class="chart-bar" style="height:70%"></div>
+        <div class="chart-bar" style="height:55%"></div>
+        <div class="chart-bar" style="height:90%"></div>
+        <div class="chart-bar" style="height:60%"></div>
+        <div class="chart-bar" style="height:80%"></div>
+        <div class="chart-bar" style="height:65%"></div>
+      </div>
+      <p style="font-size:.75rem;margin-top:.4rem;color:var(--text-secondary)">本週流量走勢</p>
+    </div>
+
+    <!-- 卡片 4 -->
+    <div class="card">
+      <h2>⚠️ 警示範例</h2>
+      <div class="alert alert-success">✓ 操作成功完成！</div>
+      <div class="alert alert-warn">⚠ 請注意：設定即將過期。</div>
+      <div class="alert alert-error">✗ 錯誤：連接失敗，請重試。</div>
+    </div>
+
+    <!-- 卡片 5 -->
+    <div class="card">
+      <h2>📝 資料表格</h2>
+      <table>
+        <thead><tr><th>專案</th><th>狀態</th><th>優先級</th></tr></thead>
+        <tbody>
+          <tr><td>後端 API</td><td>進行中</td><td>高</td></tr>
+          <tr><td>前端 UI</td><td>審查中</td><td>中</td></tr>
+          <tr><td>文件</td><td>完成</td><td>低</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 卡片 6 -->
+    <div class="card">
+      <h2>💻 程式碼片段</h2>
+      <pre><code>const theme = {
+  bg: 'var(--bg)',
+  surface: 'var(--surface)',
+  accent: 'var(--accent)',
+  text: 'var(--text)'
+};</code></pre>
+      <button class="btn btn-primary" style="margin-top:.5rem">複製程式碼</button>
+    </div>
+  </div>
+
+  <!-- 對比度實驗室 -->
+  <div class="lab">
+    <span class="eyebrow">Signature · 即時運算</span>
+    <h2 style="font-size:1.25rem">🔬 對比度實驗室</h2>
+    <p class="sub" style="margin-top:.25rem">依據 WCAG 2.1 相對亮度公式即時計算目前主題的實際對比度，而非僅列出色碼。</p>
+    <div class="lab-grid" id="lab-grid"></div>
+  </div>
+</div>
+
+<script>
+  const THEME_ORDER = ['dracula','solarized','nord','github','one-dark','catppuccin','midnight','oled'];
+
+  // ---- WCAG contrast ratio engine ----
+  function hexToRgb(hex){
+    hex = hex.replace('#','');
+    if(hex.length===3) hex = hex.split('').map(c=>c+c).join('');
+    const num = parseInt(hex,16);
+    return {r:(num>>16)&255, g:(num>>8)&255, b:num&255};
+  }
+  function relLuminance({r,g,b}){
+    const [rs,gs,bs] = [r,g,b].map(v=>{
+      v/=255;
+      return v<=0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4);
+    });
+    return 0.2126*rs + 0.7152*gs + 0.0722*bs;
+  }
+  function contrastRatio(hex1, hex2){
+    const l1 = relLuminance(hexToRgb(hex1));
+    const l2 = relLuminance(hexToRgb(hex2));
+    const [lighter, darker] = l1 > l2 ? [l1,l2] : [l2,l1];
+    return (lighter + 0.05) / (darker + 0.05);
+  }
+  function badgeFor(ratio, isLargeText){
+    const aaThreshold = isLargeText ? 3 : 4.5;
+    const aaaThreshold = isLargeText ? 4.5 : 7;
+    if(ratio >= aaaThreshold) return {label:'AAA', ok:true};
+    if(ratio >= aaThreshold) return {label:'AA', ok:true};
+    return {label:'不合格', ok:false};
+  }
+
+  const PAIRS = [
+    {key:'--text', bg:'--bg', label:'主要文字 / 背景', large:false},
+    {key:'--text-secondary', bg:'--bg', label:'次要文字 / 背景', large:false},
+    {key:'--text', bg:'--surface', label:'主要文字 / 卡片', large:false},
+    {key:'--accent', bg:'--bg', label:'強調色 / 背景（大字/圖形）', large:true},
+    {key:'--danger', bg:'--surface', label:'錯誤色 / 卡片', large:true},
+    {key:'--success', bg:'--surface', label:'成功色 / 卡片', large:true},
+  ];
+
+  function renderLab(){
+    const cs = getComputedStyle(document.documentElement);
+    const grid = document.getElementById('lab-grid');
+    grid.innerHTML = '';
+    let passCount = 0;
+
+    PAIRS.forEach(pair => {
+      const fg = cs.getPropertyValue(pair.key).trim();
+      const bg = cs.getPropertyValue(pair.bg).trim();
+      const ratio = contrastRatio(fg, bg);
+      const badge = badgeFor(ratio, pair.large);
+      if(badge.ok) passCount++;
+
+      const row = document.createElement('div');
+      row.className = 'lab-row';
+      row.innerHTML = `
+        <div class="lab-preview" style="background:${bg};color:${fg}">Aa</div>
+        <div class="lab-info">
+          <div class="lab-label">${pair.label}</div>
+          <span class="lab-hex">${fg} on ${bg}</span>
+        </div>
+        <div>
+          <div class="lab-badge" style="background:${badge.ok ? 'color-mix(in srgb, var(--success) 25%, transparent)' : 'color-mix(in srgb, var(--danger) 25%, transparent)'};color:${badge.ok ? 'var(--success)' : 'var(--danger)'}">${badge.label}</div>
+          <span class="lab-ratio mono">${ratio.toFixed(2)}:1</span>
+        </div>
+      `;
+      grid.appendChild(row);
+    });
+
+    document.getElementById('stat-aa').textContent = `${passCount}/${PAIRS.length}`;
+  }
+
+  // ---- Theme switching ----
+  function applyTheme(theme){
+    document.documentElement.setAttribute('data-theme', theme);
+    document.querySelectorAll('.sw-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
+    localStorage.setItem('dark-mode-theme', theme);
+    renderLab();
+  }
+
+  document.querySelectorAll('.sw-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
+  });
+
+  const saved = localStorage.getItem('dark-mode-theme');
+  applyTheme(THEME_ORDER.includes(saved) ? saved : 'dracula');
+</script>
+</body>
+</html>
